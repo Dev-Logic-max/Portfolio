@@ -1,0 +1,295 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   Aurora Engineered — design tokens
+   Premium in BOTH themes. Multi-accent system so each section/block can carry a
+   distinct color without looking cheap. Light + dark are both first-class.
+   Toggle handled by next-themes → `.dark` class on <html>.
+   ============================================================================= */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- LIGHT (default) --------------------------------------------------
+   Warm porcelain base, ink-navy text, saturated-but-AA accents. */
+:root {
+  --radius: 0.9rem;
+
+  /* Surfaces (layered, not flat) */
+  --bg: 250 250% 99%;            /* page background (warm off-white) */
+  --bg-raw: #fbfbfe;
+  --surface: #ffffff;           /* cards */
+  --surface-2: #f4f5fb;         /* subtle raised / muted blocks */
+  --surface-3: #ecedf6;         /* deeper wells */
+  --border: #e5e7f0;
+  --border-strong: #d3d6e4;
+
+  /* Text */
+  --fg: #0c1024;                /* near-ink navy, not pure black */
+  --fg-muted: #4a5169;
+  --fg-subtle: #767d95;
+
+  /* Aurora accent spectrum (the brand core) */
+  --accent: #5b5bf6;            /* primary — indigo/violet */
+  --accent-fg: #ffffff;
+  --accent-2: #2f7bff;          /* blue */
+  --accent-3: #06b6d4;          /* cyan */
+  --accent-4: #10b981;          /* emerald */
+  --accent-5: #f59e0b;          /* amber */
+  --accent-6: #f43f6e;          /* rose */
+  --accent-violet: #7c5cff;
+
+  /* Effects */
+  --ring: #5b5bf6;
+  --glow: 91 91 246;            /* rgb of primary, for glows/shadows */
+  --grid-line: rgba(12, 16, 36, 0.05);
+  --aurora-a: rgba(124, 92, 255, 0.28);
+  --aurora-b: rgba(47, 123, 255, 0.24);
+  --aurora-c: rgba(6, 182, 212, 0.20);
+
+  --shadow-color: 220 40% 20%;
+  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.06);
+  --shadow-md: 0 6px 24px -6px hsl(var(--shadow-color) / 0.12);
+  --shadow-lg: 0 24px 60px -12px hsl(var(--shadow-color) / 0.18);
+  --shadow-glow: 0 0 0 1px rgb(var(--glow) / 0.15), 0 8px 40px -8px rgb(var(--glow) / 0.35);
+}
+
+/* ---------- DARK -------------------------------------------------------------
+   Deep ink-navy, layered surfaces, brighter aurora accents. */
+.dark {
+  --bg-raw: #070a14;
+  --surface: #0e1120;
+  --surface-2: #141828;
+  --surface-3: #1b2135;
+  --border: #232a41;
+  --border-strong: #313a58;
+
+  --fg: #eef1fb;
+  --fg-muted: #a9b1cc;
+  --fg-subtle: #737b98;
+
+  --accent: #7b7bff;            /* brighter indigo for dark */
+  --accent-fg: #0a0d18;
+  --accent-2: #4f97ff;
+  --accent-3: #22d3ee;
+  --accent-4: #34d399;
+  --accent-5: #fbbf24;
+  --accent-6: #fb7185;
+  --accent-violet: #9d7bff;
+
+  --ring: #7b7bff;
+  --glow: 123 123 255;
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --aurora-a: rgba(124, 92, 255, 0.40);
+  --aurora-b: rgba(47, 123, 255, 0.32);
+  --aurora-c: rgba(34, 211, 238, 0.24);
+
+  --shadow-color: 230 60% 3%;
+  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.5);
+  --shadow-md: 0 8px 30px -6px hsl(var(--shadow-color) / 0.6);
+  --shadow-lg: 0 30px 70px -12px hsl(var(--shadow-color) / 0.7);
+  --shadow-glow: 0 0 0 1px rgb(var(--glow) / 0.25), 0 10px 50px -8px rgb(var(--glow) / 0.45);
+}
+
+/* ---------- Map tokens into Tailwind's theme --------------------------------- */
+@theme inline {
+  --color-bg: var(--bg-raw);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-4: var(--accent-4);
+  --color-accent-5: var(--accent-5);
+  --color-accent-6: var(--accent-6);
+  --color-accent-violet: var(--accent-violet);
+
+  --color-ring: var(--ring);
+
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.4rem);
+  --radius-2xl: calc(var(--radius) + 0.9rem);
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+  --font-display: var(--font-display), var(--font-sans), sans-serif;
+
+  --shadow-soft: var(--shadow-md);
+  --shadow-elevated: var(--shadow-lg);
+  --shadow-glow: var(--shadow-glow);
+
+  --ease-signature: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Base ------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Hard guard against any element bleeding past the viewport width. */
+    overflow-x: hidden;
+  }
+  body {
+    overflow-x: clip; /* clip (not scroll) — keeps position:sticky working */
+    max-width: 100%;
+  }
+  body {
+    background-color: var(--bg-raw);
+    color: var(--fg);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    /* subtle depth: a faint radial lift at the top so the page never feels flat */
+    background-image: radial-gradient(
+      120% 80% at 50% -10%,
+      color-mix(in oklab, var(--accent) 7%, transparent),
+      transparent 60%
+    );
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 30%, transparent);
+    color: var(--fg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  /* Nicer scrollbar (desktop) */
+  @media (pointer: fine) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-strong) transparent;
+    }
+  }
+}
+
+/* ---------- Reusable brand utilities ----------------------------------------- */
+@layer utilities {
+  /* Aurora gradient text for headlines */
+  .text-aurora {
+    background-image: linear-gradient(
+      100deg,
+      var(--accent-violet),
+      var(--accent-2) 45%,
+      var(--accent-3) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Glass surface used for premium cards */
+  .glass {
+    background: color-mix(in oklab, var(--surface) 78%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    border: 1px solid color-mix(in oklab, var(--border-strong) 70%, transparent);
+  }
+
+  /* Faint engineering grid background */
+  .bg-grid {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Radial spotlight helper (cards / hero) */
+  .spotlight {
+    background: radial-gradient(
+      600px circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--accent) 18%, transparent),
+      transparent 60%
+    );
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-page { padding-inline: 2rem; }
+  }
+
+  /* Gradient hairline border (premium card edge) */
+  .border-gradient {
+    position: relative;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(130deg, var(--accent-violet), var(--accent-2) 40%, var(--accent-3)) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Soft glow behind an element (use sparingly on key CTAs) */
+  .glow-accent {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Animated shimmer sweep for skeletons / highlight bars */
+  .shimmer {
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      color-mix(in oklab, var(--accent) 22%, transparent) 50%,
+      transparent 80%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2.5s linear infinite;
+  }
+
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+}
+
+/* ---------- Keyframes -------------------------------------------------------- */
+@theme {
+  --animate-aurora: aurora 18s ease-in-out infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-shimmer: shimmer 2.5s linear infinite;
+}
+@keyframes aurora {
+  0%, 100% { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+  33% { transform: translate3d(3%, -4%, 0) rotate(6deg) scale(1.08); }
+  66% { transform: translate3d(-4%, 3%, 0) rotate(-4deg) scale(1.04); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+
+/* ---------- Reduced motion --------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
